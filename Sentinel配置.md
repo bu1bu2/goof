@@ -7,7 +7,7 @@
 > * 1、监控redis进行状态，包括master和slave 
 > * 2、当master down机，能自动将slave切换成master
 
-![哨兵机制][1]
+![image](http://img.blog.csdn.net/20160614141650316)
 ------
 
 
@@ -30,7 +30,7 @@
 
 **1.2 sentinel.conf配置**
 由于上面三个redis实例采取的一主二从的模式,且为了简单,我只配置了一个监控master的sentinel.其实哨兵之间也是可以集群的,如下图:
-![哨兵集群][2]
+![image](http://img.blog.csdn.net/20151212110409647?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
 
 配置如下:
 
