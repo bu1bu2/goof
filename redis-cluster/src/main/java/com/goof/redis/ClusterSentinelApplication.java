@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RedisSentinelApplication {
+public class ClusterSentinelApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RedisSentinelApplication.class, args);
+		SpringApplication.run(ClusterSentinelApplication.class, args);
 	}
 
 }

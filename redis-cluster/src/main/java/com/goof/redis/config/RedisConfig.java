@@ -1,17 +1,13 @@
 package com.goof.redis.config;
 
-import java.util.HashSet;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisSentinelConfiguration;
+import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import com.goof.redis.config.Sentinelproperty;
 
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -24,23 +20,24 @@ import redis.clients.jedis.JedisPoolConfig;
 public class RedisConfig {
 
 	@Autowired
-	private Sentinelproperty sentinelproperty;
+	private ClusterProperty clusterProperty;
 
-	@Bean
-	public JedisConnectionFactory redisConnectionFactory() {
-		
-		System.out.println("...........>:"+sentinelproperty.getNodes());
-		
-		JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory(new RedisSentinelConfiguration(
-				"mymaster", new HashSet<>(sentinelproperty.getNodes())));
-		redisConnectionFactory.setUsePool(Boolean.TRUE);
-		redisConnectionFactory.setPoolConfig(jedisPoolConfig());
-		return redisConnectionFactory;
-	}
+    @Bean
+    public JedisConnectionFactory redisConnectionFactory() {
+    	
+    	System.out.println(">>>>>>>>>>>>>>>>:"+clusterProperty.getNodes().size());
+    	clusterProperty.getNodes().forEach(System.out::printf);
+    	
+        JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory(
+                new RedisClusterConfiguration(clusterProperty.getNodes()));
+        redisConnectionFactory.setUsePool(Boolean.TRUE);
+        redisConnectionFactory.setPoolConfig(jedisPoolConfig());
+        return redisConnectionFactory;
+    }
 
 	@Bean
 	public RedisTemplate<String, String> redisTemplate() {
-		RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+		RedisTemplate<String, String> redisTemplate = new RedisTemplate<String,String>();
 		redisTemplate.setConnectionFactory(redisConnectionFactory());
 		redisTemplate.setKeySerializer(stringRedisSerializer());
 		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer());
